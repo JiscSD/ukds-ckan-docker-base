@@ -1,4 +1,5 @@
 # docker
 
-# other
-.vscode
+# IDE/Code Editor
+/.vscode
+/.idea
