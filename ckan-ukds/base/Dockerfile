@@ -27,11 +27,11 @@ RUN apk --no-cache add tzdata && ln -s /usr/share/zoneinfo/${TZ} /etc/localtime
 # Install system libraries
 RUN apk update && apk --no-cache add -y \
         apk-tools \
+        g++ \
         git \
         libpq-dev \
-        g++ \
-        linux-headers-generic \
         libtool \
+        linux-headers-generic \
         wget
 
 # Create the src directory
