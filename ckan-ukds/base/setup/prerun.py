@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 import psycopg2
+
 try:
     from urllib.request import urlopen
     from urllib.error import URLError
@@ -19,7 +20,6 @@ RETRY = 5
 
 
 def update_plugins():
-
     plugins = os.environ.get("CKAN__PLUGINS", "")
     print(("[prerun] Setting the following plugins in {}:".format(ckan_ini)))
     print(plugins)
@@ -29,7 +29,6 @@ def update_plugins():
 
 
 def check_main_db_connection(retry=None):
-
     conn_str = os.environ.get("CKAN_SQLALCHEMY_URL")
     if not conn_str:
         print("[prerun] CKAN_SQLALCHEMY_URL not defined, not checking db")
@@ -38,7 +37,6 @@ def check_main_db_connection(retry=None):
 
 
 def check_datastore_db_connection(retry=None):
-
     conn_str = os.environ.get("CKAN_DATASTORE_WRITE_URL")
     if not conn_str:
         print("[prerun] CKAN_DATASTORE_WRITE_URL not defined, not checking db")
@@ -47,7 +45,6 @@ def check_datastore_db_connection(retry=None):
 
 
 def check_db_connection(conn_str, retry=None):
-
     if retry is None:
         retry = RETRY
     elif retry == 0:
@@ -67,7 +64,6 @@ def check_db_connection(conn_str, retry=None):
 
 
 def check_solr_connection(retry=None):
-
     if retry is None:
         retry = RETRY
     elif retry == 0:
@@ -95,7 +91,6 @@ def check_solr_connection(retry=None):
 
 
 def init_db():
-
     db_command = ["ckan", "-c", ckan_ini, "db", "init"]
     print("[prerun] Initializing or upgrading db - start")
     try:
@@ -113,7 +108,6 @@ def init_db():
 
 
 def init_datastore_db():
-
     conn_str = os.environ.get("CKAN_DATASTORE_WRITE_URL")
     if not conn_str:
         print("[prerun] Skipping datastore initialization")
@@ -159,7 +153,6 @@ def init_datastore_db():
 
 
 def create_sysadmin():
-
     name = os.environ.get("CKAN_SYSADMIN_NAME")
     password = os.environ.get("CKAN_SYSADMIN_PASSWORD")
     email = os.environ.get("CKAN_SYSADMIN_EMAIL")
@@ -202,6 +195,7 @@ def create_sysadmin():
         command = ["chown", "-R", "ckan:ckan", data_dir]
         subprocess.call(command)
         print("[prerun] Ensured storage directory is owned by ckan")
+
 
 if __name__ == "__main__":
 
