@@ -65,6 +65,11 @@ RUN pip3 install -U pip && \
     pip install -e . && \
     pip install -r requirements.txt && \
     cd .. && \
+    git clone https://github.com/JiscSD/ckanext-dataset_geo_display.git && \
+    cd ckanext-dataset_geo_display && \
+    pip install -e . && \
+    pip install -r requirements.txt && \
+    cd .. && \
     # Create and update CKAN config
     ckan generate config ${CKAN_INI} && \
     ckan config-tool ${CKAN_INI} "SECRET_KEY = " && \
