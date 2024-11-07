@@ -55,7 +55,17 @@ RUN pip3 install -U pip && \
             ckanext-xloader && \
     pip3 install -r 'https://raw.githubusercontent.com/ckan/ckanext-xloader/master/requirements.txt' && \
     pip3 install -e 'git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages' && \
-    pip install -U requests[security] && \
+    pip3 install -U requests[security] && \
+    git clone https://github.com/JiscSD/ckanext-customised_fields_from_tag_vocabulary.git && \
+    cd ckanext-customised_fields_from_tag_vocabulary && \
+    pip3 install -e . && \
+    pip3 install -r requirements.txt && \
+    cd .. && \
+    git clone https://github.com/JiscSD/ckanext-ukdstheme.git && \
+    cd ckanext-ukdstheme && \
+    pip install -e . && \
+    pip install -r requirements.txt && \
+    cd .. && \
     # Create and update CKAN config
     ckan generate config ${CKAN_INI} && \
     ckan config-tool ${CKAN_INI} "SECRET_KEY = " && \
