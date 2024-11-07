@@ -4,7 +4,7 @@ LABEL authors="UKDS-Jisc"
 # Tag passed through via the Makefile
 ARG CKAN_VERSION=${CKAN_VERSION}
 
-ENV TZ=UTC
+ENV TZ="Europe/London"
 ENV APP_DIR=/srv/app
 ENV SRC_DIR=${APP_DIR}/src
 ENV CKAN_INI=${APP_DIR}/ckan.ini
@@ -22,7 +22,6 @@ ENV UWSGI_HARAKIRI=50
 WORKDIR ${APP_DIR}
 
 # Set up timezone
-ENV TZ="Europe/London"
 RUN apk --no-cache add tzdata && ln -s /usr/share/zoneinfo/${TZ} /etc/localtime
 
 # Install system libraries
