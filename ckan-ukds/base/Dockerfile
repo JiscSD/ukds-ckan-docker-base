@@ -22,10 +22,12 @@ ENV UWSGI_HARAKIRI=50
 WORKDIR ${APP_DIR}
 
 # Set up timezone
-RUN apk --no-cache add tzdata && ln -s /usr/share/zoneinfo/${TZ} /etc/localtime
+RUN apk --no-cache add tzdata && \
+    ln -s /usr/share/zoneinfo/${TZ} /etc/localtime
 
 # Install system libraries
-RUN apk update && apk --no-cache add -y \
+RUN apk update && \
+    apk --no-cache add -y \
         apk-tools \
         g++ \
         git \
