@@ -25,16 +25,40 @@ WORKDIR ${APP_DIR}
 RUN apk --no-cache add tzdata && \
     ln -s /usr/share/zoneinfo/${TZ} /etc/localtime
 
-# Install system libraries
-RUN apk update && \
-    apk --no-cache add -y \
-        apk-tools \
-        g++ \
+# Install necessary packages to run CKAN
+RUN apk add --no-cache curl \
+        gettext \
         git \
-        libpq-dev \
+        libmagic \
+        libxml2 \
+        libxslt \
+        musl-dev \
+        patch \
+        postgresql-client \
+        py3-gevent \
+        py3-pip \
+        python3 \
+        uwsgi \
+        uwsgi-corerouter \
+        uwsgi-gevent \
+        uwsgi-http \
+        uwsgi-python && \
+    # Packages to build CKAN requirements and plugins
+    apk add --no-cache --virtual .build-deps \
+        autoconf \
+        automake \
+        cargo \
+        g++ \
+        gcc \
+        libffi-dev \
         libtool \
-        linux-headers-generic \
-        wget
+        libxml2-dev \
+        libxslt-dev \
+        linux-headers \
+        make \
+        openssl-dev \
+        postgresql-dev \
+        python3-dev && \
 
 # Create the src directory
 RUN mkdir -p ${SRC_DIR}
