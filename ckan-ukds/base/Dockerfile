@@ -1,4 +1,4 @@
-FROM python:3.13-alpine
+FROM python:3.12-alpine
 
 LABEL authors="UKDS-Jisc"
 # Tag passed through via the Makefile
@@ -27,6 +27,7 @@ RUN apk --no-cache add tzdata && \
 
 # Install necessary packages to run CKAN
 RUN apk add --no-cache curl \
+        g++ \
         gettext \
         git \
         libmagic \
@@ -37,7 +38,6 @@ RUN apk add --no-cache curl \
         postgresql-client \
         py3-gevent \
         py3-pip \
-        python3 \
         uwsgi \
         uwsgi-corerouter \
         uwsgi-gevent \
@@ -48,7 +48,6 @@ RUN apk add --no-cache curl \
         autoconf \
         automake \
         cargo \
-        g++ \
         gcc \
         libffi-dev \
         libtool \
@@ -57,8 +56,7 @@ RUN apk add --no-cache curl \
         linux-headers \
         make \
         openssl-dev \
-        postgresql-dev \
-        python3-dev && \
+        postgresql-dev
 
 # Create the src directory
 RUN mkdir -p ${SRC_DIR}
@@ -68,42 +66,38 @@ RUN pip3 install -U pip && \
     pip3 install uwsgi && \
     cd ${SRC_DIR} && \
     pip3 install -e git+${GIT_URL}@${CKAN_VERSION}#egg=ckan && \
-    cd ckan && \
-    pip3 install --no-binary markdown -r requirements.txt && \
+    pip3 install --no-binary markdown -r ckan/requirements.txt && \
     # Install CKAN envvars to support loading config from environment variables
     pip3 install -e git+https://github.com/okfn/ckanext-envvars.git@v0.0.6#egg=ckanext-envvars && \
-    # Install CKAN Plugins \
+    # Install CKAN Plugins
     pip3 install ckanext-pdfview \
             ckanext-geoview \
-            ckanext-harvest \
             ckanext-matomo \
             ckanext-xloader && \
     pip3 install -r 'https://raw.githubusercontent.com/ckan/ckanext-xloader/master/requirements.txt' && \
-    pip3 install -e 'git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages' && \
+    pip3 install -e git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages && \
     pip3 install -U requests[security] && \
+    pip3 install -e git+https://github.com/ckan/ckanext-harvest.git#egg=ckanext-harvest && \
+    pip3 install -r ckanext-harvest/requirements.txt && \
+    pip3 install -e git+https://github.com/ckan/ckanext-dcat.git#egg=ckanext-dcat && \
+    pip3 install -r ckanext-dcat/requirements.txt && \
     git clone https://github.com/JiscSD/ckanext-customised_fields_from_tag_vocabulary.git && \
-    cd ckanext-customised_fields_from_tag_vocabulary && \
-    pip3 install -e . && \
-    pip3 install -r requirements.txt && \
-    cd .. && \
+    pip3 install -e ckanext-customised_fields_from_tag_vocabulary/. && \
+    pip3 install -r ckanext-customised_fields_from_tag_vocabulary/requirements.txt && \
     git clone https://github.com/JiscSD/ckanext-ukdstheme.git && \
-    cd ckanext-ukdstheme && \
-    pip install -e . && \
-    pip install -r requirements.txt && \
-    cd .. && \
+    pip3 install -e ckanext-ukdstheme/. && \
+    pip3 install -r ckanext-ukdstheme/requirements.txt && \
     git clone https://github.com/JiscSD/ckanext-dataset_geo_display.git && \
-    cd ckanext-dataset_geo_display && \
-    pip install -e . && \
-    pip install -r requirements.txt && \
-    cd .. && \
+    pip install -e ckanext-dataset_geo_display/. && \
+    pip install -r ckanext-dataset_geo_display/requirements.txt && \
     # Create and update CKAN config
     ckan generate config ${CKAN_INI} && \
     ckan config-tool ${CKAN_INI} "SECRET_KEY = " && \
     ckan config-tool ${CKAN_INI} "ckan.plugins = ${CKAN__PLUGINS}"
 
 # Create a local user and group plus set up the storage path
-RUN groupadd -g 92 ckan && \
-    useradd -rm -d /srv/app -s /bin/bash -g ckan -u 92 ckan && \
+RUN addgroup -g 92 ckan && \
+    adduser -u 92 -h /srv/app -s /bin/bash -D -G ckan ckan && \
     mkdir -p ${CKAN_STORAGE_PATH} && \
     chown -R ckan:ckan ${CKAN_STORAGE_PATH}
 
