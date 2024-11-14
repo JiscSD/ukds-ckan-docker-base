@@ -1,7 +1,7 @@
 .PHONY: all help build build-all push
 SHELL := /bin/bash
 CKAN_VERSION=2.11.0
-PYTHON_VERSION=3.13
+PYTHON_VERSION=3.12
 CKAN_VERSION_MAJOR=$(shell echo $(CKAN_VERSION) | cut -d'.' -f1)
 CKAN_VERSION_MINOR=$(shell echo $(CKAN_VERSION) | cut -d'.' -f2)
 TAG_NAME="ukds-ckan/ckan-base:$(CKAN_VERSION)"
