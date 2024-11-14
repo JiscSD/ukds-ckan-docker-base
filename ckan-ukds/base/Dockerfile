@@ -71,6 +71,7 @@ RUN pip3 install -U pip && \
     pip3 install -e git+https://github.com/okfn/ckanext-envvars.git@v0.0.6#egg=ckanext-envvars && \
     # Install CKAN Plugins
     pip3 install ckanext-pdfview \
+            ckanext-envvars \
             ckanext-geoview \
             ckanext-matomo \
             ckanext-xloader && \
