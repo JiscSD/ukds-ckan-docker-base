@@ -103,8 +103,8 @@ RUN groupadd -g 502 ckan-sys && \
     useradd -rm -d /srv/app -s /bin/bash -g ckan-sys -u 502 ckan-sys && \
     useradd -rm -d /srv/app -s /bin/bash -g ckan-sys -u 503 ckan
 
-COPY setup/prerun.py ${APP_DIR}
-COPY setup/start_ckan.sh ${APP_DIR}
+COPY base/setup/prerun.py ${APP_DIR}
+COPY base/setup/start_ckan.sh ${APP_DIR}
 ADD https://raw.githubusercontent.com/ckan/ckan/${CKAN_REF}/wsgi.py ${APP_DIR}
 RUN chmod 644 ${APP_DIR}/wsgi.py
 
