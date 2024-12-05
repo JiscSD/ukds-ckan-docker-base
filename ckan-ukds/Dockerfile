@@ -110,9 +110,7 @@ RUN addgroup -g 502 ${CKAN_SYS_USER} && \
 COPY setup/prerun.py ${APP_DIR}
 COPY setup/start_ckan.sh ${APP_DIR}
 ADD https://raw.githubusercontent.com/ckan/ckan/${CKAN_INSTALL_VERSION}/wsgi.py ${APP_DIR}
-RUN chmod 644 ${APP_DIR}/wsgi.py && \
-    chmod 755 ${APP_DIR}/start_ckan.sh && \
-    chmod 755 ${APP_DIR}/prerun.py
+RUN chmod 644 ${APP_DIR}/wsgi.py
 
 # Create entrypoint directory for children image scripts
 RUN mkdir -p /docker-entrypoint.d && \
