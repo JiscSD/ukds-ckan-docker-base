@@ -107,8 +107,8 @@ RUN addgroup -g 502 ${CKAN_SYS_USER} && \
     adduser -S -h /srv/app -s /bin/bash -G ${CKAN_SYS_USER} -u 502 ${CKAN_SYS_USER} && \
     adduser -S -h /srv/app -s /bin/bash -G ${CKAN_SYS_USER} -u 503 ${CKAN_USER}
 
-COPY setup/prerun.py ${APP_DIR}/
-COPY setup/start_ckan.sh ${APP_DIR}/
+COPY setup/prerun.py ${APP_DIR}
+COPY setup/start_ckan.sh ${APP_DIR}
 ADD https://raw.githubusercontent.com/ckan/ckan/${CKAN_INSTALL_VERSION}/wsgi.py ${APP_DIR}
 RUN chmod 644 ${APP_DIR}/wsgi.py
 
